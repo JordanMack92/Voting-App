@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    
+    <title>Home</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="/public/css/main.css">
+    
+</head>
+<body>
+    
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Voting App</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/home">Home</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/polls">Polls</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a id = "hello-user">Hello <%= user.local.email.split("@")[0] %></a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+    
+<div class="container">
+
+    <div class="jumbotron text-center">
+        <h1>Welcome <%= user.local.email.split("@")[0] %>!</h1>
+        
+        <h2>Voting App</h2>
+        
+        <a href = "/polls">Create Poll</a>
+        
+        
+        
+    </div>
+
+</div>
+</body>
+</html>

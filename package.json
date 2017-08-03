@@ -19,16 +19,25 @@
     "boilerplate"
   ],
   "scripts": {
-  "start": "node server.js"
+    "start": "node server.js"
   },
   "author": "Blake Johnston",
   "license": "MIT",
   "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "body-parser": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.0",
     "dotenv": "^1.2.0",
+    "ejs": "~0.8.5",
     "express": "^4.12.4",
-    "express-session": "^1.11.3",
+    "express-dynamic-helpers-patch": "0.0.2",
+    "express-session": "~1.0.0",
+    "method-override": "~1.0.0",
     "mongoose": "^4.1.0",
+    "morgan": "~1.0.0",
     "passport": "^0.3.0",
-    "passport-github": "^1.0.0"
+    "passport-github": "^1.0.0",
+    "passport-local": "~0.1.6"
   }
 }

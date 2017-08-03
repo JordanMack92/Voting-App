@@ -1,5 +1,10 @@
 /********* Fonts **********/
 
+#hello-user:hover{
+	text-decoration: none;
+	cursor: pointer;
+}
+
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
