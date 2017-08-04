@@ -2,13 +2,15 @@
 <html>
 <head>
 
-    <title>Profile</title>
+    <title>Polls</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="/public/css/main.css">
     
 </head>
+
 <body>
+    
     <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -25,33 +27,45 @@
     </ul>
   </div>
 </nav>
+
 <div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+<div class="col-sm-6 col-sm-offset-3">
 
-    <div class="row">
+    <h1>Create Poll</h1>
 
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
 
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-            </div>
+    <form action="/polls/create" method="POST">
+        <div class="form-group">
+            <label>Poll</label>
+            <input type="text" class="form-control" name="question">
         </div>
+        
+        <div class="form-group">
+            <label>Option #1</label>
+            <input type="text" class="form-control" name="option1">
+        </div>
+        
+        <div class="form-group">
+            <label>Option #2</label>
+            <input type="text" class="form-control" name="option2">
+        </div>
+    
+        <div class="form-group" id = "empty">
+            <!-- THIS IS WHERE MORE OPTIONS GO -->
+        </div>
+        
+        <button class="btn btn-warning btn-lg">More Options</button>
 
-    </div>
+        <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+    </form>
 
+    <hr>
 
 
 </div>
+
+</div>
+
+
 </body>
-</html>

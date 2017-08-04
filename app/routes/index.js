@@ -2,8 +2,49 @@
 
 var path = process.cwd();
 //var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var pollSchema = require(path+'/app/models/polls');
+var optionSchema = require(path + '/app/models/options.js');
+
+
 
 module.exports = function (app, passport) {
+    
+    app.get('/polls', function(req,res){
+        
+       pollSchema.find({}, function(err,polls){
+           if(err) throw err;
+           res.send(polls);
+       }); 
+    });
+    
+    
+    app.post('/polls/create', isLoggedIn, function(req,res){
+       
+       var newPoll = new pollSchema;
+       newPoll.question = req.body.question;
+       newPoll.user = req.user.local.email;
+       newPoll.options = [];
+       var json  = {
+           option: req.body.option1,
+           votes: 0
+       };
+       newPoll.options.push(json);
+       json.option = req.body.option2;
+       newPoll.options.push(json);
+    
+       newPoll.save(function(err){
+          if (err) throw err;
+          else {
+              res.redirect('/polls');
+          }
+       });
+    });
+    
+    app.get('/polls/create', isLoggedIn, function(req,res){
+       res.render(path+'/public/createpoll.ejs', {
+           user: req.user
+       }); 
+    });
 	
 	app.get('/', alreadyLoggedIn, function(req, res) {
         res.render(path + '/public/index.ejs', {
