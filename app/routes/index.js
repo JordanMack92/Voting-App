@@ -3,17 +3,57 @@
 var path = process.cwd();
 //var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 var pollSchema = require(path+'/app/models/polls');
-var optionSchema = require(path + '/app/models/options.js');
+var User = require(path + '/app/models/users');
+var navi = require(path + '/app/controllers/navigationController.server.js');
+var mongo = require('mongodb').MongoClient;
+
 
 
 
 module.exports = function (app, passport) {
     
+    
+    //========================================//
+    //==========DELETE DATABASES==============//
+    //-=======================================//
+    //  app.get('/deletedb', function(req,res){
+    //     mongo.connect("mongodb://localhost:27017/vote-app",function(err,db){
+    //       db.collection('polls').dropIndexes();
+    //     });
+    //     pollSchema.remove({}, function(err){
+    //       if(err) throw err;
+    //     });
+    //     User.remove({}, function(err){
+    //       if(err) throw err; 
+    //     });
+    // });
+    //=========================================//
+    
+    app.get('/polls/:query', function(req,res){
+        var query = req.params.query;
+       
+        pollSchema.findOne( { _id: query }, function(err,poll){
+            if (err) throw err;
+            
+              res.render(path+'/public/showpoll', {
+                  poll: poll
+              });
+        }); 
+    });
+    
+  
+    app.get('/navigation', navi.navbar);
+    
+    
+    
     app.get('/polls', function(req,res){
         
        pollSchema.find({}, function(err,polls){
            if(err) throw err;
-           res.send(polls);
+           
+           res.render(path + '/public/polls.ejs', {
+               polls: polls
+           });
        }); 
     });
     
@@ -23,24 +63,36 @@ module.exports = function (app, passport) {
        var newPoll = new pollSchema;
        newPoll.question = req.body.question;
        newPoll.user = req.user.local.email;
+       newPoll.name = req.user.local.name;
        newPoll.options = [];
+       
+       if (req.body.option1 == req.body.option2){
+           res.render(path + '/public/createpoll.ejs');
+       }
+       else {
+       
        var json  = {
            option: req.body.option1,
            votes: 0
        };
        newPoll.options.push(json);
        json.option = req.body.option2;
+       
        newPoll.options.push(json);
     
        newPoll.save(function(err){
-          if (err) throw err;
+          if (err) {
+           res.send(err);
+           
+          }
           else {
               res.redirect('/polls');
           }
        });
+    }
     });
     
-    app.get('/polls/create', isLoggedIn, function(req,res){
+    app.get('/create', isLoggedIn, function(req,res){
        res.render(path+'/public/createpoll.ejs', {
            user: req.user
        }); 
@@ -135,46 +187,4 @@ module.exports = function (app, passport) {
 	 	}
 	 }
 	 
-
-	// var clickHandler = new ClickHandler();
-
-	// app.route('/')
-	// 	.get( function (req, res) {
-	// 		res.sendFile(path + '/public/home.html');
-	// 	});
-
-	// app.route('/login')
-	// 	.get(function (req, res) {
-	// 		res.sendFile(path + '/public/login.html');
-	// 	});
-
-	// app.route('/logout')
-	// 	.get(function (req, res) {
-	// 		req.logout();
-	// 		res.redirect('/login');
-	// 	});
-
-	// app.route('/profile')
-	// 	.get(isLoggedIn, function (req, res) {
-	// 		res.sendFile(path + '/public/profile.html');
-	// 	});
-
-	// app.route('/api/:id')
-	// 	.get(isLoggedIn, function (req, res) {
-	// 		res.json(req.user.github);
-	// 	});
-
-	// app.route('/auth/github')
-	// 	.get(passport.authenticate('github'));
-
-	// app.route('/auth/github/callback')
-	// 	.get(passport.authenticate('github', {
-	// 		successRedirect: '/',
-	// 		failureRedirect: '/login'
-	// 	}));
-
-	// app.route('/api/:id/clicks')
-	// 	.get(isLoggedIn, clickHandler.getClicks)
-	// 	.post(isLoggedIn, clickHandler.addClick)
-	// 	.delete(isLoggedIn, clickHandler.resetClicks);
 };

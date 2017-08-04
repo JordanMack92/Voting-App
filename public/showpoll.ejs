@@ -2,7 +2,7 @@
 <html>
 <head>
     
-    <title>Home</title>
+    <title>Show Poll</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link rel="stylesheet" href="/public/css/main.css">
@@ -11,25 +11,21 @@
 </head>
 <body>
     
-  
+    <div class = "container" id = "navspot">
+        <h1><%= poll.question %></h1>
+        <h3>by <strong><%= poll.name %></strong></h3>
     
-<div class="container" id = "navspot">
+        <form action = '/update/votes' method = 'POST'>
+            <input type = "radio"><%= poll.options[0].option %><br>
+            <input type = "radio"><%= poll.options[1].option %><br>
+    
+            <input type = "submit"><br>
+        </form>
 
-    <div class="jumbotron text-center">
-        <h1>Welcome <%= user.local.email.split("@")[0] %>!</h1>
-        
-        <h2>Voting App</h2>
-        
-        <a href = "/create">Create Poll</a>
-        
-        
-        
     </div>
-
-</div>
-
+    
 <script type="text/javascript" src = "/common/ajax-functions.js"></script>
 <script type="text/javascript" src = "/controllers/navigationController.client.js"></script>
-
+    
 </body>
 </html>

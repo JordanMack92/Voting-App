@@ -2,15 +2,17 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var optionSchema = require(process.cwd() + '/app/models/options.js');
+
 
 var pollSchema = Schema({
     question: String,
     options: [{
-        option: String,
+        _id:false,
+        option: {type:String, unique: true},
         votes: Number
     }],
-    user: String
+    user: String,
+    name: String
 });
 
 

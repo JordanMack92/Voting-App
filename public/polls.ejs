@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+
+    <title>Polls</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</head>
+
+<body>
+    
+    <div class = "container" id = "navspot">
+        
+        <h1>Polls:</h1>
+        
+        <% for (var i = 0; i < polls.length; i++) {  %>
+         <a href = '/polls/<%= polls[i]._id %>'>
+            <div class = "well">
+                <h3><%= polls[i].question %></h3>
+                <p>by <strong><%= polls[i].name %></strong></p>
+            </div>
+         </a>    
+        <% } %>
+        
+    </div>
+
+
+
+<script type="text/javascript" src = "/common/ajax-functions.js"></script>
+<script type="text/javascript" src = "/controllers/navigationController.client.js"></script>
+    
+</body>
+
+
