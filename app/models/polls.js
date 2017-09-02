@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var arrayUniquePlugin = require('mongoose-unique-array');
 
 
 var pollSchema = Schema({
@@ -15,5 +16,6 @@ var pollSchema = Schema({
     name: String
 });
 
+pollSchema.plugin(arrayUniquePlugin);
 
 module.exports = mongoose.model('Poll', pollSchema);

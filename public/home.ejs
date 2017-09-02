@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link rel="stylesheet" href="/public/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        
+        function tweetThis(url){
+            window.open("https://twitter.com/intent/tweet?text=https://voting-app-jordanmack92.c9users.io/home"+url);
+        }
+        
+    </script>
     
 </head>
 <body>
@@ -16,7 +23,7 @@
 <div class="container" id = "navspot">
 
     <div class="jumbotron text-center">
-        <h1>Welcome <%= user.local.email.split("@")[0] %>!</h1>
+        <h1>Welcome <%= user.local.name %>!</h1>
         
         <h2>Voting App</h2>
         
@@ -26,6 +33,20 @@
         
     </div>
 
+</div>
+
+<div>
+    
+    <% for(var i = 0; i < polls.length; i++){ %>
+        <div class = "well">
+            <h4><a href = "/polls/<%= polls[i]._id %>"> <%= polls[i].question %> </a></h4>
+            <form method = "POST" action = "/polls/delete/<%= polls[i]._id %>">
+            <button type = "submit">Delete</button>
+            </form>
+            <button type = "button" onclick = "tweetThis('<%= polls[i]._id %>')">Share</button>
+        </div>
+    <% } %>
+    
 </div>
 
 <script type="text/javascript" src = "/common/ajax-functions.js"></script>

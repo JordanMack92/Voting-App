@@ -8,7 +8,7 @@ methods.navbar = function(req, res){
                     <a class="navbar-brand" href="/">Voting App</a>\
                 </div>\
                 <ul class="nav navbar-nav">\
-                    <li class="active"><a href="/home">Home</a></li>\
+                    <li ><a href="/home">Home</a></li>\
                     <li><a href="/profile">Profile</a></li>\
                     <li><a href="/create">Create Poll</a></li>\
                     <li><a href="/polls">Polls</a></li>\

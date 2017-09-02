@@ -12,6 +12,73 @@ var mongo = require('mongodb').MongoClient;
 
 module.exports = function (app, passport) {
     
+    app.post('/polls/submit/:id', function(req, res){
+        var id = req.params.id;
+       console.log(req.body.poll);
+       pollSchema.findOne( { _id: id }, function(err, poll){
+           console.log(poll);
+          for (var i = 0; i < poll.options.length; i++){
+              if (poll.options[i].option == req.body.selected){
+                  poll.options[i].votes++;
+                    break;
+              }
+          } 
+          poll.save(function(err){
+              if (err) throw err;
+              res.end();
+          });
+          
+       });
+    });
+    
+    app.get('/chart/:id', function(req,res){
+        var id = req.params.id;
+        pollSchema.findOne( { _id: id }, function(err,poll){
+           res.send(poll); 
+        });
+    });
+    
+    
+    app.post('/polls/delete/:id', function(req,res){
+       var id = req.params.id;
+       pollSchema.findByIdAndRemove( id, function(err){
+          if (err) throw err;
+          res.redirect('/home');
+       });
+    });
+    
+    
+    app.post('/polls/addOptions/:id', function(req,res){
+       
+        var id = req.params.id;
+       pollSchema.findOne( { _id : id }, function(err, poll){
+          
+          if (err) throw err;
+          for (var i = 0; i < poll.options.length; i++){
+              if (poll.options[i].option == req.body.newOption){
+                  console.log("enter break");
+                  break;
+              }
+              if (i == (poll.options.length - 1)) {
+                  var json = {
+                      option: req.body.newOption,
+                      votes: 0
+                  }
+                  
+                  poll.options.push(json);
+                  break;
+              }
+          }
+          pollSchema.findByIdAndUpdate(id, { $set: { options: poll.options } }, function(err, results){
+             if (err) throw err;
+             else {
+                 res.redirect('/polls/'+id);
+             }
+          });
+          
+       }); 
+    });
+    
     
     //========================================//
     //==========DELETE DATABASES==============//
@@ -31,12 +98,16 @@ module.exports = function (app, passport) {
     
     app.get('/polls/:query', function(req,res){
         var query = req.params.query;
-       
+        var user = null;
+       if (req.isAuthenticated){
+           user = req.user;
+       }
         pollSchema.findOne( { _id: query }, function(err,poll){
             if (err) throw err;
             
               res.render(path+'/public/showpoll', {
-                  poll: poll
+                  poll: poll,
+                  user: user
               });
         }); 
     });
@@ -66,19 +137,18 @@ module.exports = function (app, passport) {
        newPoll.name = req.user.local.name;
        newPoll.options = [];
        
-       if (req.body.option1 == req.body.option2){
-           res.render(path + '/public/createpoll.ejs');
-       }
-       else {
-       
-       var json  = {
-           option: req.body.option1,
+    //   if (req.body.option1 == req.body.option2){
+    //       res.render(path + '/public/createpoll.ejs');
+    //   }
+    //   else {
+    
+    for (var i = 0; i < req.body.option.length; i++){
+        var json  = {
+           option: req.body.option[i],
            votes: 0
        };
        newPoll.options.push(json);
-       json.option = req.body.option2;
-       
-       newPoll.options.push(json);
+    }
     
        newPoll.save(function(err){
           if (err) {
@@ -89,7 +159,7 @@ module.exports = function (app, passport) {
               res.redirect('/polls');
           }
        });
-    }
+   // }
     });
     
     app.get('/create', isLoggedIn, function(req,res){
@@ -105,9 +175,14 @@ module.exports = function (app, passport) {
     });
 
     app.get('/home', isLoggedIn, function(req,res){
-        res.render(path+ '/public/home.ejs', {
-            user : req.user // get the user out of session and pass to template
+        pollSchema.find( { user: req.user.local.email }, function(err, polls){
+            res.render(path+ '/public/home.ejs', {
+                user : req.user,
+                polls: polls
+            });
         });
+        
+        
     });
 
     // =====================================

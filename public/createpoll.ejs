@@ -28,23 +28,26 @@
             <input type="text" class="form-control" name="question">
         </div>
         
-        <div class="form-group">
+        <div class="form-group" id = "option1">
             <label>Option #1</label>
-            <input type="text" class="form-control" name="option1">
+            <input type="text" class="form-control" name="option" >
         </div>
         
-        <div class="form-group">
+        <div class="form-group" id = "option2">
             <label>Option #2</label>
-            <input type="text" class="form-control" name="option2">
+            <input type="text" class="form-control" name="option" >
         </div>
     
         <div class="form-group" id = "empty">
             <!-- THIS IS WHERE MORE OPTIONS GO -->
         </div>
         
-        <button class="btn btn-warning btn-lg">More Options</button>
-
+        
         <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+        
+        <button type = "button" class="btn btn-warning btn-lg" id = "addOption">Add Option</button>
+
+        
     </form>
 
     <hr>
@@ -56,7 +59,7 @@
 
 <script type="text/javascript" src = "/common/ajax-functions.js"></script>
 <script type="text/javascript" src = "/controllers/navigationController.client.js"></script>
-
+<script type="text/javascript" src = "/controllers/createPollController.client.js"></script>
 
 </body>
 </html>
